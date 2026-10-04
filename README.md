@@ -14,6 +14,8 @@ Deployed app: https://shiftproof-ml.streamlit.app/
 
 GitHub repository: https://github.com/srishsrujan/Placement_Predictor-ML
 
+Drive video link: https://drive.google.com/file/d/10DEbzV-EFc4jPzAJQvJb2q9ha2Upyb7h/view?usp=drive_link
+
 This repository powers the deployed placement predictor web app. The project is intended to be used as a practical ML demo and decision-support tool for student planning.
 
 ## Features
