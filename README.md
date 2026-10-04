@@ -1,8 +1,50 @@
-# Placement Readiness Predictor
+# Placement Predictor ML
 
-A tabular machine-learning app that estimates a student's placement readiness from academic results, aptitude, technical and communication skills, coding practice, projects, internships, certifications, and backlogs. The dashboard supports individual profiles, live what-if scoring, cohort filters and charts, and CSV batch predictions.
+A deployed Streamlit-based machine learning application that estimates a student's placement readiness using academic records, aptitude, technical and communication skills, coding practice, projects, internships, certifications, and backlogs.
 
-## Run
+This project is designed for:
+- individual student assessment
+- what-if career planning scenarios
+- cohort-level analytics across branches and graduation years
+- bulk prediction from CSV uploads
+
+## Live demo
+
+Deployed app: https://shiftproof-ml.streamlit.app/
+
+GitHub repository: https://github.com/srishsrujan/Placement_Predictor-ML
+
+This repository powers the deployed placement predictor web app. The project is intended to be used as a practical ML demo and decision-support tool for student planning.
+
+## Features
+
+- Student profile scoring with readiness percentage and category
+- Strengths and focus-area recommendations
+- Scenario simulation for coding hours, projects, and internships
+- Branch and cohort analytics dashboard
+- CSV batch prediction workflow
+- Model comparison metrics and reporting outputs
+
+## Tech stack
+
+- Python
+- Streamlit
+- Pandas
+- scikit-learn
+- NumPy
+- Uvicorn (optional API)
+
+## Repository overview
+
+- `app.py` — Streamlit dashboard entry point
+- `src/shiftproof/` — ML preprocessing, training, prediction, and reporting logic
+- `data/` — generated synthetic student dataset and data utilities
+- `reports/` — evaluation reports and metrics
+- `artifacts/` — saved trained model assets
+- `tests/` — automated validation tests
+- `sample_input.csv` — example CSV for batch predictions
+
+## Local setup
 
 ```powershell
 python -m venv .venv
@@ -18,25 +60,31 @@ Optional API:
 uvicorn shiftproof.api:app --app-dir src --reload
 ```
 
-Run tests with `python -m pytest -q`.
+Run tests:
 
-## Data and target
+```powershell
+python -m pytest -q
+```
 
-`data/generate_data.py` creates a reproducible synthetic student dataset at `data/raw/students.csv`. The binary target `placement_ready` means the generated profile is ready according to the synthetic outcome process. It is a demonstration label, not a real hiring outcome or guarantee.
+## Data and model notes
 
-The features are `cgpa`, `aptitude_score`, `technical_skills_score`, `communication_score`, `coding_hours_per_week`, `projects_completed`, `internships_completed`, `certifications_count`, `backlogs`, and `branch`. `graduation_year` is used only to create chronological train, validation, and test cohorts; it is not a model feature. `student_id` is an identifier and is never used for training.
+The project uses a synthetic dataset generated for demonstration purposes. The target field `placement_ready` represents a training label derived from an example outcome process and should not be interpreted as a real-world hiring prediction or guarantee.
 
-The preprocessing pipeline imputes missing numeric and categorical values, scales numeric fields, and one-hot encodes branch. A custom NumPy logistic-regression baseline is compared with Random Forest and HistGradientBoosting on the same held-out cohort. Validation data selects and calibrates the final model; the test cohort remains held out for reporting.
+The pipeline includes:
+- missing-value handling
+- feature scaling
+- categorical encoding
+- comparison of multiple models
+- final model selection and calibration on validation data
 
-## Dashboard
+## Important disclaimer
 
-- Individual readiness score and category with profile strengths and focus areas.
-- What-if controls for coding practice, projects, and internships.
-- Cohort filters and readiness-rate chart by branch, plus model comparison metrics.
-- CSV upload and downloadable predictions. `sample_input.csv` is a ready-to-use example.
-
-Scores and profile signals support planning only. Synthetic training data cannot establish real-world placement probability; train and validate on representative, consented student data before using this for decisions.
+This tool is meant for educational and planning use. Predictions are informative only and should not replace real placement decisions, recruiter judgment, or validated institutional data.
 
 ## Outputs
 
-Training writes the fitted model and summary under `artifacts/`, plus model comparison, branch/cohort slices, calibration, error analysis, and drift reports under `reports/`.
+Training generates model artifacts and analysis reports under:
+- `artifacts/`
+- `reports/`
+
+These include model comparison summaries, calibration outputs, and cohort-level evaluation metrics.
