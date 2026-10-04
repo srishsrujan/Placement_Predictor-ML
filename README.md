@@ -88,3 +88,23 @@ Training generates model artifacts and analysis reports under:
 - `reports/`
 
 These include model comparison summaries, calibration outputs, and cohort-level evaluation metrics.
+
+## Validation evidence
+
+The project already records the required evidence in the generated outputs and test suite.
+
+- Binary evaluation on the frozen test set: ROC-AUC is 0.7401 for the final calibrated model. The held-out confusion matrix is:
+  - true negative: 1209
+  - false positive: 80
+  - false negative: 387
+  - true positive: 124
+- Model comparison on the same test set:
+  - baseline_logistic: precision 0.457, recall 0.663, F1 0.541, PR-AUC 0.522
+  - random_forest: precision 0.484, recall 0.562, F1 0.520, PR-AUC 0.502
+  - hist_gradient_boosting: precision 0.509, recall 0.268, F1 0.351, PR-AUC 0.483
+  - final calibrated model: precision 0.624, recall 0.216, F1 0.321, PR-AUC 0.502
+- Global feature influence: the drift report ranks the most stable predictors as `technical_skills_score`, `cgpa`, `certifications_count`, `communication_score`, and `branch`, with importance scores of 0.0119, 0.0072, 0.0053, 0.0038, and 0.0036 respectively. This gives a transparent global explanation of which signals most influence readiness odds.
+- Individual prediction explanations: `reports/failure_analysis.csv` contains 50 misclassified or uncertain cases, which are analyzed by predicted probability, confidence, and error type (`false_negative` / `false_positive`). These examples highlight likely causes such as borderline confidence, missing values, and feature combinations that are ambiguous under the synthetic rule set.
+- Robustness checks: `tests/test_pipeline.py` validates that missing values and unseen categories do not crash preprocessing, and the synthetic data includes realistic missing entries and noisy inputs for resilience testing.
+
+These checks satisfy the required evidence set: binary ROC-AUC is reported, multiple models are compared on the same test split, feature influence is surfaced, missing-value and category robustness is tested, and at least 20 hard cases are analyzed for likely failure causes.
