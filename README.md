@@ -34,6 +34,28 @@ This repository powers the deployed placement predictor web app. The project is 
 - NumPy
 - Uvicorn (optional API)
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Synthetic student dataset] --> B[Validate and clean data]
+    B --> C[Chronological train / validation / test split]
+    C --> D[Preprocessing: impute, scale, encode]
+    D --> E[Compare logistic regression, random forest, and gradient boosting]
+    E --> F[Select and calibrate model using validation data]
+    F --> G[Evaluate on held-out test data]
+    F --> H[Save model artifact]
+    G --> I[Metrics and evaluation reports]
+    H --> J[Streamlit dashboard]
+    H --> K[Optional FastAPI endpoint]
+    L[Single-student form or batch CSV] --> J
+    L --> K
+    J --> M[Readiness score, category, and cohort analytics]
+    K --> N[Prediction response]
+```
+
+Training data is split by graduation year to preserve the chronological order. Preprocessing is fitted on the training data, model selection and calibration use validation data, and the test split is reserved for final evaluation. The saved model powers both dashboard predictions and the optional API.
+
 ## Repository overview
 
 - `app.py` — Streamlit dashboard entry point
